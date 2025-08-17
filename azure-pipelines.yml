@@ -1,0 +1,16 @@
+stages: 
+name: 'kaka'
+
+trigger: none
+
+pool: prabhatpool1
+     
+jobs:
+- job: Myfirstjob 
+  displayName: My first job
+  steps:
+  - task: TerraformInstaller@1
+    inputs:
+      terraformVersion: 'latest'
+
+  
