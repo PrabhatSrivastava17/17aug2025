@@ -11,3 +11,4 @@ resource "azurerm_storage_account" "prabhatstorageacc" {
   account_replication_type = "LRS"
 }
 
+# kdkd
