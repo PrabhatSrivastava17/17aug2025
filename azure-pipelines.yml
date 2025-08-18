@@ -71,41 +71,41 @@ stages:
    dependsOn: Build
 
    jobs:
-    - job: fmtJob
-      displayName: Terraform Fmt Job
+   - job: fmtJob
+     displayName: Terraform Fmt Job
     
-      steps:
-       - ${{ if eq(parameters.runTerraformFmt, true) }}:
-         - task: TerraformTask@5
-           displayName: Terraform Fmt
-           inputs:
-             provider: 'azurerm'
-             command: 'custom'
-             outputTo: 'console'
-             customCommand: 'fmt'
-             environmentServiceNameAzureRM: $(Service_conn)
+     steps:
+        - ${{ if eq(parameters.runTerraformFmt, true) }}:
+          - task: TerraformTask@5
+            displayName: Terraform Fmt
+            inputs:
+              provider: 'azurerm'
+              command: 'custom'
+              outputTo: 'console'
+              customCommand: 'fmt'
+              environmentServiceNameAzureRM: $(Service_conn)
 
-    - job: ValidateJob
-      displayName: Terraform Validate Job
-      dependsOn: fmtJob
-      
-      steps:
-       - ${{ if eq(parameters.runTerraformValidate, true) }}:
-         - task: TerraformTask@5
-           displayName: Terraform Validate
-           inputs:
-             provider: 'azurerm'
-             command: 'validate'
+   - job: ValidateJob
+     displayName: Terraform Validate Job
+     dependsOn: fmtJob
+
+     steps:
+        - ${{ if eq(parameters.runTerraformValidate, true) }}:
+          - task: TerraformTask@5
+            displayName: Terraform Validate
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
 
  - stage: PlanStage
    displayName: "Plan Stage"
    dependsOn: ValidateStage
   
    jobs:
-    - job: PlanJob
-      displayName: "Terraform Plan job"
+   - job: PlanJob
+     displayName: "Terraform Plan job"
    
-      steps:
+     steps:
         - ${{ if eq(parameters.runTerraformPlan, true) }}:   
           - task: TerraformTask@5
             displayName: Terraform plan
