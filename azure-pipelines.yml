@@ -50,7 +50,6 @@ stages:
           inputs:
             terraformVersion: 'latest'
 
-   jobs:
    - job: InitJob
      displayName: Terraform Init Job
 
@@ -67,50 +66,51 @@ stages:
             backendAzureRmContainerName: 'prabhatcontainer'
             backendAzureRmKey: 'prabhat.tfstate'
 
-- stage: ValidateStage
-  displayName: "Validate Stage"
-  dependsOn: Build
+ - stage: ValidateStage
+   displayName: "Validate Stage"
+   dependsOn: Build
 
-   - job: fmtJob
-     displayName: Terraform Fmt Job
+   jobs:
+    - job: fmtJob
+      displayName: Terraform Fmt Job
     
-     steps:
-      - ${{ if eq(parameters.runTerraformFmt, true) }}:
-        - task: TerraformTask@5
-          displayName: Terraform Fmt
-          inputs:
-            provider: 'azurerm'
-            command: 'custom'
-            outputTo: 'console'
-            customCommand: 'fmt'
-            environmentServiceNameAzureRM: $(Service_conn)
+      steps:
+       - ${{ if eq(parameters.runTerraformFmt, true) }}:
+         - task: TerraformTask@5
+           displayName: Terraform Fmt
+           inputs:
+             provider: 'azurerm'
+             command: 'custom'
+             outputTo: 'console'
+             customCommand: 'fmt'
+             environmentServiceNameAzureRM: $(Service_conn)
 
-   - job: ValidateJob
-     displayName: Terraform Validate Job
-     dependsOn: fmtJob
-     
-     steps:
-      - ${{ if eq(parameters.runTerraformValidate, true) }}:
-        - task: TerraformTask@5
-          displayName: Terraform Validate
-          inputs:
-            provider: 'azurerm'
-            command: 'validate'
+    - job: ValidateJob
+      displayName: Terraform Validate Job
+      dependsOn: fmtJob
+      
+      steps:
+       - ${{ if eq(parameters.runTerraformValidate, true) }}:
+         - task: TerraformTask@5
+           displayName: Terraform Validate
+           inputs:
+             provider: 'azurerm'
+             command: 'validate'
 
  - stage: PlanStage
-  displayName: "Plan Stage"
-  dependsOn: ValidateStage
+   displayName: "Plan Stage"
+   dependsOn: ValidateStage
   
+   jobs:
     - job: PlanJob
-     displayName: "Terraform Plan job"
-     dependsOn: ValidateJob
+      displayName: "Terraform Plan job"
    
-     steps:
-      - ${{ if eq(parameters.runTerraformPlan, true) }}:   
-        - task: TerraformTask@5
-          displayName: Terraform plan
-          inputs:
-            provider: 'azurerm'
-            command: 'plan'
-            environmentServiceNameAzureRM: $(Service_conn)
+      steps:
+        - ${{ if eq(parameters.runTerraformPlan, true) }}:   
+          - task: TerraformTask@5
+            displayName: Terraform plan
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              environmentServiceNameAzureRM: $(Service_conn)
 
