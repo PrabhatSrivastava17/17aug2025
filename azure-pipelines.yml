@@ -6,27 +6,27 @@ parameters:
 - name: runTerraformInstall
   displayName: Run Terraform Install?
   type: boolean
-  default: true
+  default: false
 
 - name: runTerraformInit
   displayName: Run Terraform Init?
   type: boolean
-  default: true
+  default: false
 
 - name: runTerraformFmt
   displayName: Run Terraform Fmt?
   type: boolean
-  default: true
+  default: false
 
 - name: runTerraformValidate
   displayName: Run Terraform Validate?
   type: boolean
-  default: true
+  default: false
 
 - name: runTerraformPlan
   displayName: Run Terraform Plan?
   type: boolean
-  default: true
+  default: false
 
 variables: 
   folder_path: '$(System.DefaultWorkingDirectory)'
