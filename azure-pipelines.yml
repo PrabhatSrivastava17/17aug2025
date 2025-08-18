@@ -66,8 +66,8 @@ stages:
             backendAzureRmContainerName: 'prabhatcontainer'
             backendAzureRmKey: 'prabhat.tfstate'
 
- - stage: ValidateStage
-   displayName: "Validate Stage"
+ - stage: FmtandValidateStage
+   displayName: "Fmt&Validate Stage"
    dependsOn: Build
 
    jobs:
@@ -99,7 +99,7 @@ stages:
 
  - stage: PlanStage
    displayName: "Plan Stage"
-   dependsOn: ValidateStage
+   dependsOn: FmtandValidateStage
   
    jobs:
    - job: PlanJob
