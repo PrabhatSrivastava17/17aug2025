@@ -13,4 +13,14 @@ jobs:
     inputs:
       terraformVersion: 'latest'
 
+  - task: TerraformTask@5
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/provider.tf'
+      backendServiceArm: 'yusufserviceconnection'
+      backendAzureRmStorageAccountName: 'prabhatstorageacc'
+      backendAzureRmContainerName: 'prabhatcontainer'
+      backendAzureRmKey: 'prabhat.tfstate'
+
   
