@@ -66,8 +66,8 @@ stages:
             backendAzureRmContainerName: 'prabhatcontainer'
             backendAzureRmKey: 'prabhat.tfstate'
 
-   - job: fmtJob
-     displayName: Terraform Fmt Job
+   - job: fmtandValidateJob
+     displayName: Fmt and Validate Job
     
      steps:
         - ${{ if eq(parameters.runTerraformFmt, true) }}:
@@ -80,11 +80,6 @@ stages:
               customCommand: 'fmt'
               environmentServiceNameAzureRM: $(Service_conn)
 
-   - job: ValidateJob
-     displayName: Terraform Validate Job
-     dependsOn: fmtJob
-
-     steps:
         - ${{ if eq(parameters.runTerraformValidate, true) }}:
           - task: TerraformTask@5
             displayName: Terraform Validate
