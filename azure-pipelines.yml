@@ -10,10 +10,12 @@ jobs:
   displayName: My first job
   steps:
   - task: TerraformInstaller@1
+    displayName: Terraform Install
     inputs:
       terraformVersion: 'latest'
 
   - task: TerraformTask@5
+    displayName: Terraform Init
     inputs:
       provider: 'azurerm'
       command: 'init'
@@ -23,4 +25,25 @@ jobs:
       backendAzureRmContainerName: 'prabhatcontainer'
       backendAzureRmKey: 'prabhat.tfstate'
 
-  
+  - task: TerraformTask@5
+    displayName: Terraform fmt
+    inputs:
+      provider: 'azurerm'
+      command: 'custom'
+      outputTo: 'console'
+      customCommand: 'fmt'
+      environmentServiceNameAzureRM: 'yusufserviceconnection'
+
+  - task: TerraformTask@5
+    displayName: Terraform Validate
+    inputs:
+      provider: 'azurerm'
+      command: 'validate'
+
+  - task: TerraformTask@5
+    displayName: Terraform plan
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      environmentServiceNameAzureRM: 'yusufserviceconnection'
+
