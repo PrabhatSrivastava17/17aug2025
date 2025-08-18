@@ -50,8 +50,8 @@ stages:
           inputs:
             terraformVersion: 'latest'
 
-   - job: InitJob
-     displayName: Terraform Init Job
+   - job: InitValidateJob
+     displayName: Init Job + Validate Job
 
      steps:
       - ${{ if eq(parameters.runTerraformInit, true) }}:
@@ -65,11 +65,8 @@ stages:
             backendAzureRmStorageAccountName: 'prabhatstorageacc'
             backendAzureRmContainerName: 'prabhatcontainer'
             backendAzureRmKey: 'prabhat.tfstate'
-
-   - job: fmtandValidateJob
-     displayName: Fmt and Validate Job
     
-     steps:
+ 
         - ${{ if eq(parameters.runTerraformFmt, true) }}:
           - task: TerraformTask@5
             displayName: Terraform Fmt
