@@ -17,7 +17,7 @@ jobs:
     inputs:
       provider: 'azurerm'
       command: 'init'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/provider.tf'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
       backendServiceArm: 'yusufserviceconnection'
       backendAzureRmStorageAccountName: 'prabhatstorageacc'
       backendAzureRmContainerName: 'prabhatcontainer'
