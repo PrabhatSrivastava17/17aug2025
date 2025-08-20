@@ -1,20 +1,38 @@
-name: Prabhatpipe
+name: Prabhat
 trigger:
  branches:
-   include:
-     - feature
+    include:
+      - main
 pool:
  name: prabhatpool1
-
 stages:
-- stage: buildstage
-  displayName: Build Stage
+  - stage: buildstage
+    displayName: Build stage
+    jobs:
+      - job: Terraformcommandsjob
+        displayName: Terraform command job
+        steps:
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: 'latest'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            backendServiceArm: 'yusufserviceconnection'
+            backendAzureRmResourceGroupName: 'tata'
+            backendAzureRmStorageAccountName: 'tatastorage1'
+            backendAzureRmContainerName: 'tatacontainer'
+            backendAzureRmKey: 'prabhat.tfstate'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
 
-  jobs:
-  - job: installInitandplanjob
-    displayName: Install + Init + Plan job
 
-    steps:
-    - task: TerraformInstaller@1
-      inputs:
-        terraformVersion: 'latest'
+
+  
