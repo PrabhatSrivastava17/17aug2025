@@ -1,0 +1,50 @@
+name: Prabhat
+trigger:
+ branches:
+    include:
+      - main
+      
+pool:
+ name: prabhatpool1
+stages:
+  - stage: buildstage
+    displayName: Build stage
+    jobs:
+      - job: Terraformcommandsjob
+        displayName: Terraform command job
+        steps:
+        - task: TerraformInstaller@1
+          displayName: Terraform Install
+          inputs:
+            terraformVersion: 'latest'
+        - task: TerraformTask@5
+          displayName: terraform init
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            backendServiceArm: 'yusufserviceconnection'
+            backendAzureRmResourceGroupName: 'tata'
+            backendAzureRmStorageAccountName: 'tatastorage1'
+            backendAzureRmContainerName: 'tatacontainer'
+            backendAzureRmKey: 'prabhat.tfstate'
+        - task: TerraformTask@5
+          displayName: Terraform validate
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+        - task: TerraformTask@5
+          displayName: terraform plan
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            environmentServiceNameAzureRM: 'yusufserviceconnection'
+        - task: TerraformTask@5
+          displayName: terraform apply
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+
+
+
+
+  
