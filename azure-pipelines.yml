@@ -28,6 +28,11 @@ stages:
             backendAzureRmContainerName: 'tatacontainer'
             backendAzureRmKey: 'prabhat.tfstate'
         - task: TerraformTask@5
+          displayName: Terraform validate
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+        - task: TerraformTask@5
           displayName: terraform plan
           inputs:
             provider: 'azurerm'
