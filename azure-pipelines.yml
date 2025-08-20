@@ -14,9 +14,11 @@ stages:
         displayName: Terraform command job
         steps:
         - task: TerraformInstaller@1
+          displayName: Terraform Install
           inputs:
             terraformVersion: 'latest'
         - task: TerraformTask@5
+          displayName: terraform init
           inputs:
             provider: 'azurerm'
             command: 'init'
@@ -26,10 +28,12 @@ stages:
             backendAzureRmContainerName: 'tatacontainer'
             backendAzureRmKey: 'prabhat.tfstate'
         - task: TerraformTask@5
+          displayName: terraform plan
           inputs:
             provider: 'azurerm'
             command: 'plan'
         - task: TerraformTask@5
+          displayName: terraform apply
           inputs:
             provider: 'azurerm'
             command: 'apply'
