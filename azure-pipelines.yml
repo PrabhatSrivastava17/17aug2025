@@ -1,0 +1,20 @@
+name: Prabhatpipe
+trigger:
+ branches:
+   include:
+     - feature
+pool:
+ name: prabhatpool1
+
+stages:
+- stage: buildstage
+  displayName: Build Stage
+
+  jobs:
+  - job: installInitandplanjob
+    displayName: Install + Init + Plan job
+
+    steps:
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: 'latest'
