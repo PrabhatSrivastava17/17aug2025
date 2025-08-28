@@ -8,7 +8,7 @@ on:
 jobs:
   TerraformInit
   - name: Terraform Initwa
-    runs_on: Default
+    runs_on: firstrunner
     steps:
     - name: Initwa Steps
       run: echo "mera pahle code github action"
