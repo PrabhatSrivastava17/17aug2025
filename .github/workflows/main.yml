@@ -3,7 +3,7 @@ on: push
 jobs:
   terraformInit
   - name: Terraform init
-    runs_on:default
+    runs_on: firstrunner
     steps:
     - name: init step
       run; echo "mera pahla git hub workflow"
