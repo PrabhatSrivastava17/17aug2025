@@ -1,0 +1,14 @@
+name: pahla git hub action workflow
+on:
+  push: 
+    branches:
+    - feature/**
+    - main
+    - prabhat
+jobs:
+  TerraformInit
+  - name: Terraform Initwa
+    runs_on: Default
+    steps:
+    - name: Initwa Steps
+      run: echo "mera pahle code github action"
