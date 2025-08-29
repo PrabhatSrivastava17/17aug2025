@@ -1,0 +1,93 @@
+name: 'VariableWithParameter'
+
+trigger: none
+
+parameters:
+- name: runTerraformInstall
+  displayName: Run Terraform Install?
+  type: boolean
+  default: false
+
+- name: runTerraformInit
+  displayName: Run Terraform Init?
+  type: boolean
+  default: false
+
+- name: runTerraformFmt
+  displayName: Run Terraform Fmt?
+  type: boolean
+  default: false
+
+- name: runTerraformValidate
+  displayName: Run Terraform Validate?
+  type: boolean
+  default: false
+
+- name: runTerraformPlan
+  displayName: Run Terraform Plan?
+  type: boolean
+  default: false
+
+variables: 
+  folder_path: '$(System.DefaultWorkingDirectory)'
+  Service_conn: 'yusufserviceconnection'
+
+pool:
+ name: prabhatpool1
+
+stages:
+  - stage: Build
+    displayName: Build Stage
+
+    jobs:
+      - job: firstjob
+        displayName: My first jobjobs
+
+        steps:
+          - ${{ if eq(parameters.runTerraformInstall, true) }}:
+            - task: TerraformInstaller@1
+              displayName: Terraform Install
+              inputs:
+                terraformVersion: 'latest'
+
+          - ${{ if eq(parameters.runTerraformInit, true) }}:
+
+             - task: TerraformTask@5
+               displayName: Terraform Init
+               inputs:
+                provider: 'azurerm'
+                command: 'init'
+                workingDirectory: $(folder_path)
+                backendServiceArm: $(Service_conn)
+                backendAzureRmStorageAccountName: 'prabhatstorageacc'
+                backendAzureRmContainerName: 'prabhatcontainer'
+                backendAzureRmKey: 'prabhat.tfstate'
+
+          - ${{ if eq(parameters.runTerraformFmt, true) }}:
+            - task: TerraformTask@5
+              displayName: Terraform Fmt
+              inputs:
+                provider: 'azurerm'
+                command: 'custom'
+                outputTo: 'console'
+                customCommand: 'fmt'
+                environmentServiceNameAzureRM: $(Service_conn)
+
+
+          - ${{ if eq(parameters.runTerraformValidate, true) }}:
+     
+            - task: TerraformTask@5
+              displayName: Terraform Validate
+              inputs:
+                provider: 'azurerm'
+                command: 'validate'
+
+            - ${{ if eq(parameters.runTerraformPlan, true) }}:
+
+              - task: TerraformTask@5
+                displayName: Terraform plan
+                inputs:
+                  provider: 'azurerm'
+                  command: 'plan'
+                  environmentServiceNameAzureRM: $(Service_conn)
+
