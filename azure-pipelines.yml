@@ -1,0 +1,51 @@
+name: prabhatpipe
+trigger: 
+ branches:
+   include:
+     - main
+pool: prabhatpool1
+stages: 
+-  stage: buildstage
+   displayName: build stage
+   jobs:
+     - job: buildjob
+       displayName: build job
+       steps:
+       - task: TerraformInstaller@1
+         displayName: terraform install
+         inputs:
+           terraformVersion: 'latest'
+       - task: TerraformTask@5
+         displayName: terraform init
+         inputs:
+           provider: 'azurerm'
+           command: 'init'
+           backendServiceArm: 'pranamservice_123'
+           backendAzureRmResourceGroupName: 'prod2908'
+           backendAzureRmStorageAccountName: 'prodstorage2908'
+           backendAzureRmContainerName: 'prodcontainer2809'
+           backendAzureRmKey: 'prod.tfstate'
+       - task: TerraformTask@5
+         displayName: terraform fmt
+         inputs:
+           provider: 'azurerm'
+           command: 'custom'
+           outputTo: 'console'
+           customCommand: 'fmt'
+           environmentServiceNameAzureRM: 'pranamservice_123'
+       - task: TerraformTask@5
+         displayName: terraform validate
+         inputs:
+           provider: 'azurerm'
+           command: 'validate'
+       - task: TerraformTask@5
+         displayName: terraform plan
+         inputs:
+           provider: 'azurerm'
+           command: 'plan'
+       - task: TerraformTask@5
+         displayName: terraform apply
+         inputs:
+           provider: 'azurerm'
+           command: 'apply'
+
