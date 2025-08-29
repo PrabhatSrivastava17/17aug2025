@@ -12,9 +12,11 @@ stages:
        displayName: build job
        steps:
        - task: TerraformInstaller@1
+         displayName: terraform install
          inputs:
            terraformVersion: 'latest'
        - task: TerraformTask@5
+         displayName: terraform init
          inputs:
            provider: 'azurerm'
            command: 'init'
@@ -24,6 +26,7 @@ stages:
            backendAzureRmContainerName: 'prodcontainer2809'
            backendAzureRmKey: 'prod.tfstate'
        - task: TerraformTask@5
+         displayName: terraform fmt
          inputs:
            provider: 'azurerm'
            command: 'custom'
@@ -31,14 +34,17 @@ stages:
            customCommand: 'fmt'
            environmentServiceNameAzureRM: 'pranamservice_123'
        - task: TerraformTask@5
+         displayName: terraform validate
          inputs:
            provider: 'azurerm'
            command: 'validate'
        - task: TerraformTask@5
+         displayName: terraform plan
          inputs:
            provider: 'azurerm'
            command: 'plan'
        - task: TerraformTask@5
+         displayName: terraform apply
          inputs:
            provider: 'azurerm'
            command: 'apply'
